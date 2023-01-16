@@ -22,8 +22,21 @@ void UHealthComponent::BeginPlay()
 	}
 }
 
+bool UHealthComponent::TryToAddHealth(float HealthAmount)
+{
+	if (IsDead() || IsHealthFull()) return false;
+
+	SetHealth(Health + HealthAmount);
+	return true;
+}
+
+bool UHealthComponent::IsHealthFull() const
+{
+	return FMath::IsNearlyEqual(Health, MaxHealth);
+}
+
 void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
-	AController* InstigatedBy, AActor* DamageCauser)
+                                       AController* InstigatedBy, AActor* DamageCauser)
 {
 	ApplyDamage(Damage);
 }
