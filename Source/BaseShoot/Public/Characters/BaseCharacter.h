@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "BaseCharacter.generated.h"
 
+class UHealthComponent;
+
 UCLASS()
 class BASESHOOT_API ABaseCharacter : public ACharacter
 {
@@ -15,6 +17,15 @@ public:
 	ABaseCharacter();
 
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	UHealthComponent* HealthComponent;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	float LifeSpanOnDeath = 5.0f;
+
+	UFUNCTION()
+	void OnDeath();
+	
 	virtual void BeginPlay() override;
 
 public:	
