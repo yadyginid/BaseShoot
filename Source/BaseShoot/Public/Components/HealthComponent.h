@@ -54,6 +54,7 @@ private:
 						AActor* DamageCauser);
 	
 	void SetHealth(float NewHealth);
-	void ApplyDamage(float Damage);
+	void ApplyDamage(float Damage, AController* InstigatedBy);
+	void Killed(AController* KillerController);
 };
 

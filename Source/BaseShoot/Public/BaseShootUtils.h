@@ -4,14 +4,11 @@ class BaseShootUtils
 {
 public:
 	template <typename T>
-	static T* GetCharacterComponent(APawn* Character)
+	static T* GetPlayerComponent(AActor* SomeActor)
 	{
-		if (!Character)
-		{
-			return nullptr;
-		}
+		if (!SomeActor) return nullptr;
 
-		const auto Component = Character->GetComponentByClass(T::StaticClass());
-		return  Cast<T>(Component);
+		const auto Component = SomeActor->GetComponentByClass(T::StaticClass());
+		return Cast<T>(Component);
 	}
 };

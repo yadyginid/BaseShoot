@@ -2,6 +2,9 @@
 
 #include "Components/HealthComponent.h"
 
+#include "BaseShoot/BaseShootGameModeBase.h"
+#include "GameFramework/GameModeBase.h"
+
 UHealthComponent::UHealthComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
@@ -38,19 +41,19 @@ bool UHealthComponent::IsHealthFull() const
 void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
                                        AController* InstigatedBy, AActor* DamageCauser)
 {
-	ApplyDamage(Damage);
+	ApplyDamage(Damage, InstigatedBy);
 }
 
 void UHealthComponent::OnTakeRadialDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
 	FVector Origin, FHitResult HitInfo, AController* InstigatedBy, AActor* DamageCauser)
 {
-	ApplyDamage(Damage);
+	ApplyDamage(Damage, InstigatedBy);
 }
 
 void UHealthComponent::OnTakePointDamage(AActor* DamagedActor, float Damage, AController* InstigatedBy, FVector HitLocation, UPrimitiveComponent* FHitComponent, FName BoneName,
                        FVector ShotFromDirection, const UDamageType* DamageType, AActor* DamageCauser)
 {
-	ApplyDamage(Damage);
+	ApplyDamage(Damage, InstigatedBy);
 }
 
 void UHealthComponent::SetHealth(float NewHealth)
@@ -62,7 +65,7 @@ void UHealthComponent::SetHealth(float NewHealth)
 	OnHealthChanged.Broadcast(Health, HealthDelta);
 }
 
-void UHealthComponent::ApplyDamage(float Damage)
+void UHealthComponent::ApplyDamage(float Damage, AController* InstigatedBy)
 {
 	if (Damage <= 0.0f || IsDead() || !GetWorld()) return;
 
@@ -70,6 +73,20 @@ void UHealthComponent::ApplyDamage(float Damage)
 
 	if (IsDead())
 	{
+		Killed(InstigatedBy);
 		OnDeath.Broadcast();
 	}
+}
+
+void UHealthComponent::Killed(AController* KillerController)
+{
+	if (!GetWorld()) return;
+
+	const auto GameMode = Cast<ABaseShootGameModeBase>(GetWorld()->GetAuthGameMode());
+	if (!GameMode) return;
+
+	const auto Player = Cast<APawn>(GetOwner());
+	const auto VictimController = Player ? Player->Controller : nullptr;
+
+	GameMode->Killed(KillerController, VictimController);
 }

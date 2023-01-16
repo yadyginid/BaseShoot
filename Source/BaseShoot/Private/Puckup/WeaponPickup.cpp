@@ -8,7 +8,7 @@
 
 bool AWeaponPickup::GivePickupTo(APawn* PlayerPawn)
 {
-	const auto WeaponComponent = BaseShootUtils::GetCharacterComponent<UWeaponComponent>(PlayerPawn);
+	const auto WeaponComponent = BaseShootUtils::GetPlayerComponent<UWeaponComponent>(PlayerPawn);
 	if (!WeaponComponent)
 	{
 		return false;

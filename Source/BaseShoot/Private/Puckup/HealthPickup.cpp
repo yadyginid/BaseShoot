@@ -8,7 +8,7 @@
 
 bool AHealthPickup::GivePickupTo(APawn* PlayerPawn)
 {
-	const auto HealthComponent = BaseShootUtils::GetCharacterComponent<UHealthComponent>(PlayerPawn);
+	const auto HealthComponent = BaseShootUtils::GetPlayerComponent<UHealthComponent>(PlayerPawn);
 	if (!HealthComponent) return false;
 
 	return HealthComponent->TryToAddHealth(HealthAmount);
