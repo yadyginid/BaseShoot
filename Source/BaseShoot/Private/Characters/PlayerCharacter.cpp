@@ -3,6 +3,7 @@
 
 #include "Characters/PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Components/WeaponComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 APlayerCharacter::APlayerCharacter()
@@ -26,6 +27,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("LookUp", this, &APlayerCharacter::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("TurnAround", this, &APlayerCharacter::AddControllerYawInput);
+
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &UWeaponComponent::StartFire);
+	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &UWeaponComponent::StopFire);
+	PlayerInputComponent->BindAction("NextWeapon", IE_Pressed, WeaponComponent, &UWeaponComponent::NextWeapon);
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent, &UWeaponComponent::Reload);
 }
 
 void APlayerCharacter::MoveForward(float Amount)

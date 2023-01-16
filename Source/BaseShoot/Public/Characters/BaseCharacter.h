@@ -7,6 +7,8 @@
 #include "BaseCharacter.generated.h"
 
 class UHealthComponent;
+class UWeaponComponent;
+class UTextRenderComponent;
 
 UCLASS()
 class BASESHOOT_API ABaseCharacter : public ACharacter
@@ -23,9 +25,16 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	float LifeSpanOnDeath = 5.0f;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	UWeaponComponent* WeaponComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	UTextRenderComponent* HealthTextComponent;
+	
 	UFUNCTION()
 	void OnDeath();
-	
+
+	void OnHealthChanged(float Health, float Delta);
 	virtual void BeginPlay() override;
 
 public:	

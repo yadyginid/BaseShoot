@@ -3,6 +3,8 @@
 
 #include "Characters/BaseCharacter.h"
 #include "Components/HealthComponent.h"
+#include "Components/TextRenderComponent.h"
+#include "Components/WeaponComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 ABaseCharacter::ABaseCharacter()
@@ -10,6 +12,11 @@ ABaseCharacter::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
+	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
+
+	HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
+	HealthTextComponent->SetupAttachment(GetRootComponent());
+	HealthTextComponent->SetOwnerNoSee(true);
 }
 
 void ABaseCharacter::BeginPlay()
@@ -17,6 +24,7 @@ void ABaseCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 	HealthComponent->OnDeath.AddUObject(this, &ABaseCharacter::OnDeath);
+	HealthComponent->OnHealthChanged.AddUObject(this, &ABaseCharacter::OnHealthChanged);
 }
 
 void ABaseCharacter::Tick(float DeltaTime)
@@ -52,5 +60,9 @@ void ABaseCharacter::OnDeath()
 	GetMesh()->SetSimulatePhysics(true);
 }
 
+void ABaseCharacter::OnHealthChanged(float Health, float Delta)
+{
+	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%0.f"), Health)));
+}
 
 
