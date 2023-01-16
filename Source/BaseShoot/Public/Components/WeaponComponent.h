@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "BaseShoot/Public/CoreTypes.h"
+#include "Puckup/WeaponPickup.h"
 #include "WeaponComponent.generated.h"
 
 class ABaseWeapon;
@@ -23,6 +24,8 @@ public:
 
 	bool GetWeaponUIData(FWeaponUIData& WeaponUIData) const;
 	bool GetWeaponAmmoData(FAmmoData& WeaponAmmoData) const;
+	
+	bool TryAddWeapon(FWeaponData Weapon);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
@@ -71,4 +74,6 @@ private:
 
 	void OnEmptyClip();
 	void ChangeClip();
+
+	bool SpawnWeapon(FWeaponData WeaponData);
 };
