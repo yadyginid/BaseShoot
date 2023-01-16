@@ -8,16 +8,14 @@
 #include "WeaponPickup.generated.h"
 
 class ABaseWeapon;
-/**
- * 
- */
+
 UCLASS()
 class BASESHOOT_API AWeaponPickup : public ABasePickup
 {
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup", meta = (ClampMin = "1.0", ClampMax = "100.0"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
 	FWeaponData WeaponData;
 	
 private:

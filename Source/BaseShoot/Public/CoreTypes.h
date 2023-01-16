@@ -26,10 +26,10 @@ struct FWeaponData
 {
 	GENERATED_USTRUCT_BODY();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	TSubclassOf<ABaseWeapon> WeaponClass;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	UAnimMontage* ReloadAnimMontage;
 };
 

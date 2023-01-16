@@ -297,6 +297,13 @@ bool UWeaponComponent::SpawnWeapon(FWeaponData WeaponData)
 		return false;
 	}
 
+	const auto CurrenWeaponData = WeaponsData.FindByPredicate([&](const FWeaponData& Data){return Data.WeaponClass == WeaponData.WeaponClass;});
+	
+	if (CurrenWeaponData)
+	{
+		return false;
+	}
+	
 	auto Weapon = GetWorld()->SpawnActor<ABaseWeapon>(WeaponData.WeaponClass);
 	if (!Weapon)
 	{
@@ -316,5 +323,7 @@ bool UWeaponComponent::SpawnWeapon(FWeaponData WeaponData)
 	}
 
 	ReloadFinishedAnimNotify->OnNotified.AddUObject(this, &UWeaponComponent::OnReloadFinished);
+	WeaponsData.Add(WeaponData);
+	
 	return true;
 }
